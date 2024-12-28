@@ -1,4 +1,4 @@
-module rayinteract_go
+module github.com/OrtheSnowJames/rayinteract_go
 
 go 1.22.2
 

@@ -2,11 +2,11 @@
 package interact
 
 import (
-    "github.com/gen2brain/raylib-go/raylib"
-    "rayinteract_go/interact/button"
-    "rayinteract_go/interact/checkbox"
-    "rayinteract_go/interact/dropdown"
-    "rayinteract_go/interact/textfield"
+	"github.com/gen2brain/raylib-go/raylib"
+	"github.com/OrtheSnowJames/rayinteract_go/interact/button"
+	"github.com/OrtheSnowJames/rayinteract_go/interact/checkbox"
+	"github.com/OrtheSnowJames/rayinteract_go/interact/dropdown"
+	"github.com/OrtheSnowJames/rayinteract_go/interact/textfield"
 )
 
 // Theme holds the common colors and styles for UI components
