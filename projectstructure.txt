@@ -1,0 +1,18 @@
+rayinteract_go/
+├── go.mod                 # Go module file with dependencies
+├── go.sum                 # Go module checksums
+└── interact/             # Main interaction package
+    ├── lib.go            # Core library with theme and helper functions
+    ├── button/           # Button component
+    │   └── button.go     # Button implementation
+    ├── checkbox/         # Checkbox component
+    │   └── checkbox.go   # Checkbox implementation
+    ├── dropdown/         # Dropdown component
+    │   └── dropdown.go   # Dropdown implementation
+    └── textfield/        # TextField component
+        └── textfield.go  # TextField implementation
+
+Dependencies:
+- github.com/gen2brain/raylib-go/raylib
+- golang.org/x/exp
+- golang.org/x/sys
