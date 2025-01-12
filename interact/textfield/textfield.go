@@ -17,6 +17,8 @@ type TextField struct {
 	CursorPosition     int
 	CursorBlinkTimer   float32
 	BackspaceHoldTimer float32
+	Invisible          bool
+	Uneditable         bool
 }
 
 func NewTextField(x, y, width, height float32, maxLength int) *TextField {
@@ -32,6 +34,8 @@ func NewTextField(x, y, width, height float32, maxLength int) *TextField {
 		CursorPosition:     0,
 		CursorBlinkTimer:   0.0,
 		BackspaceHoldTimer: 0.0,
+		Invisible:          false,
+		Uneditable:         false,
 	}
 }
 
@@ -45,7 +49,27 @@ func (tf *TextField) SetFontSize(fontSize int32) {
 	tf.FontSize = fontSize
 }
 
+func (tf *TextField) SetInvisible(invisible bool) {
+	tf.Invisible = invisible
+}
+
+func (tf *TextField) IsInvisible() bool {
+	return tf.Invisible
+}
+
+func (tf *TextField) SetUneditable(uneditable bool) {
+	tf.Uneditable = uneditable
+}
+
+func (tf *TextField) IsUneditable() bool {
+	return tf.Uneditable
+}
+
 func (tf *TextField) Update() {
+	if tf.Uneditable {
+		return
+	}
+
 	tf.CursorBlinkTimer += rl.GetFrameTime()
 	if tf.CursorBlinkTimer >= 1.0 {
 		tf.CursorBlinkTimer = 0.0
@@ -103,6 +127,10 @@ func (tf *TextField) Update() {
 }
 
 func (tf *TextField) Draw() {
+	if tf.Invisible {
+		return
+	}
+
 	rl.DrawRectangleRec(tf.Bounds, tf.BackgroundColor)
 
 	borderColor := tf.BorderColor

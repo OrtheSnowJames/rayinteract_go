@@ -18,6 +18,8 @@ type Dropdown struct {
 	HoverIndex      *int
 	MaxVisibleItems int
 	ScrollOffset    int
+	Invisible       bool
+	Uneditable      bool
 }
 
 func NewDropdown(x, y, width, height float32, items []string) *Dropdown {
@@ -34,6 +36,8 @@ func NewDropdown(x, y, width, height float32, items []string) *Dropdown {
 		HoverIndex:      nil,
 		MaxVisibleItems: 5,
 		ScrollOffset:    0,
+		Invisible:       false,
+		Uneditable:      false,
 	}
 }
 
@@ -50,6 +54,22 @@ func (dd *Dropdown) SetFontSize(size int32) {
 
 func (dd *Dropdown) SetMaxVisibleItems(count int) {
 	dd.MaxVisibleItems = count
+}
+
+func (dd *Dropdown) SetInvisible(invisible bool) {
+	dd.Invisible = invisible
+}
+
+func (dd *Dropdown) IsInvisible() bool {
+	return dd.Invisible
+}
+
+func (dd *Dropdown) SetUneditable(uneditable bool) {
+	dd.Uneditable = uneditable
+}
+
+func (dd *Dropdown) IsUneditable() bool {
+	return dd.Uneditable
 }
 
 func min(a, b int) int {
@@ -79,6 +99,10 @@ func (dd *Dropdown) getItemBounds(index int) rl.Rectangle {
 }
 
 func (dd *Dropdown) Update() {
+	if dd.Uneditable {
+		return
+	}
+
 	mousePos := rl.GetMousePosition()
 	dd.HoverIndex = nil
 
@@ -100,6 +124,10 @@ func (dd *Dropdown) Update() {
 }
 
 func (dd *Dropdown) Draw() {
+	if dd.Invisible {
+		return
+	}
+
 	rl.DrawRectangleRec(dd.Bounds, dd.BackgroundColor)
 	rl.DrawRectangleLinesEx(dd.Bounds, 2.0, dd.BorderColor)
 

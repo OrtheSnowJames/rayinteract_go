@@ -16,7 +16,7 @@ A simple and lightweight UI component library for Raylib-Go, providing essential
 ## Installation
 
 ```bash
-go get -u github.com/yourusername/rayinteract_go
+go get -u github.com/OrtheSnowJames/rayinteract_go
 ```
 
 ## Quick Start
@@ -26,7 +26,7 @@ package main
 
 import (
         "github.com/gen2brain/raylib-go/raylib"
-        "rayinteract_go/interact"
+        "github.com/OrtheSnowJames/rayinteract_go/interact"
 )
 
 func main() {

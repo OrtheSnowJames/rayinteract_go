@@ -20,6 +20,9 @@ type Button struct {
 	Padding           float32
 	CornerRadius      float32
 	Enabled           bool
+	Invisible         bool
+	Uneditable        bool
+	UseRoundedCorners bool
 }
 
 func NewButton(x, y, width, height float32, label string) *Button {
@@ -38,6 +41,9 @@ func NewButton(x, y, width, height float32, label string) *Button {
 		Padding:           5.0,
 		CornerRadius:      5.0,
 		Enabled:           true,
+		Invisible:         false,
+		Uneditable:        false,
+		UseRoundedCorners: true,
 	}
 }
 
@@ -65,7 +71,35 @@ func (b *Button) SetEnabled(enabled bool) {
 	b.Enabled = enabled
 }
 
+func (b *Button) SetInvisible(invisible bool) {
+	b.Invisible = invisible
+}
+
+func (b *Button) IsInvisible() bool {
+	return b.Invisible
+}
+
+func (b *Button) SetUneditable(uneditable bool) {
+	b.Uneditable = uneditable
+}
+
+func (b *Button) IsUneditable() bool {
+	return b.Uneditable
+}
+
+func (b *Button) SetRoundedCorners(rounded bool) {
+	b.UseRoundedCorners = rounded
+}
+
+func (b *Button) IsRoundedCorners() bool {
+	return b.UseRoundedCorners
+}
+
 func (b *Button) Update() {
+	if b.Uneditable {
+		return
+	}
+
 	if !b.Enabled {
 		b.IsHovered = false
 		b.IsPressed = false
@@ -104,6 +138,10 @@ func (b *Button) Update() {
 }
 
 func (b *Button) Draw() {
+	if b.Invisible {
+		return
+	}
+
 	currentColor := b.BackgroundColor
 	if !b.Enabled {
 		currentColor = rl.Fade(b.BackgroundColor, 0.5)
@@ -127,13 +165,18 @@ func (b *Button) Draw() {
 		}
 	}
 
-	rl.DrawRectangleRounded(b.Bounds, b.CornerRadius, 8, currentColor)
-
 	borderThickness := float32(2.0)
 	if b.IsPressed {
 		borderThickness = 3.0
 	}
-	rl.DrawRectangleRoundedLines(b.Bounds, b.CornerRadius, int32(borderThickness), b.BorderColor)
+
+	if b.UseRoundedCorners {
+		rl.DrawRectangleRounded(b.Bounds, b.CornerRadius, 8, currentColor)
+		rl.DrawRectangleRoundedLines(b.Bounds, b.CornerRadius, int32(borderThickness), b.BorderColor)
+	} else {
+		rl.DrawRectangleRec(b.Bounds, currentColor)
+		rl.DrawRectangleLinesEx(b.Bounds, borderThickness, b.BorderColor)
+	}
 
 	textWidth := float32(rl.MeasureText(b.Label, b.FontSize))
 	textX := b.Bounds.X + (b.Bounds.Width-textWidth)/2.0

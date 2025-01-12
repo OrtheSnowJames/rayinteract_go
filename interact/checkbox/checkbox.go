@@ -18,6 +18,8 @@ type Checkbox struct {
 	IsHovered         bool
 	AnimationProgress float32
 	IsClicked         bool
+	Invisible         bool
+	Uneditable        bool
 }
 
 func NewCheckbox(x, y, size float32, label string) *Checkbox {
@@ -34,6 +36,8 @@ func NewCheckbox(x, y, size float32, label string) *Checkbox {
 		IsHovered:         false,
 		AnimationProgress: 0.0,
 		IsClicked:         false,
+		Invisible:         false,
+		Uneditable:        false,
 	}
 }
 
@@ -49,7 +53,27 @@ func (cb *Checkbox) SetFontSize(size int32) {
 	cb.FontSize = size
 }
 
+func (cb *Checkbox) SetInvisible(invisible bool) {
+	cb.Invisible = invisible
+}
+
+func (cb *Checkbox) IsInvisible() bool {
+	return cb.Invisible
+}
+
+func (cb *Checkbox) SetUneditable(uneditable bool) {
+	cb.Uneditable = uneditable
+}
+
+func (cb *Checkbox) IsUneditable() bool {
+	return cb.Uneditable
+}
+
 func (cb *Checkbox) Update() {
+	if cb.Uneditable {
+		return
+	}
+
 	mousePos := rl.GetMousePosition()
 	cb.IsHovered = rl.CheckCollisionPointRec(mousePos, cb.Bounds)
 
@@ -80,6 +104,10 @@ func (cb *Checkbox) Update() {
 }
 
 func (cb *Checkbox) Draw() {
+	if cb.Invisible {
+		return
+	}
+
 	backgroundColor := cb.BackgroundColor
 	if cb.IsHovered {
 		backgroundColor = cb.HoverColor
