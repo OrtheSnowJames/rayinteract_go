@@ -31,7 +31,7 @@ import (
 
 func main() {
         rl.InitWindow(800, 600, "RayInteract Demo")
-        defer rl.CloseWindow()
+        defer rl.CloseWindow();
         
         theme := interact.DefaultTheme()
         
